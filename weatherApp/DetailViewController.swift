@@ -35,9 +35,9 @@ class DetailViewController: UIViewController, UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            return forecast?.hourly?.data?.count ?? 0
+            return 25
         case 2:
-            return forecast?.daily?.data?.count ?? 0
+            return (forecast?.daily?.data?.count ?? 0) + 1
         case 3:
             return 2
         default:
@@ -54,22 +54,44 @@ class DetailViewController: UIViewController, UITableViewDataSource {
                 return _cell
             }
         case 1:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: "HourlyCell", for: indexPath) as! HourlyCell
-            if let hourlyData = forecast?.hourly {
-                _cell.configure(data: hourlyData)
-                return _cell
+            if(indexPath.row == 0) {
+                let _cell = tableView.dequeueReusableCell(withIdentifier: "TitleCell", for: indexPath) as! TitleCell
+                if let titleData = forecast?.hourly?.summary {
+                    _cell.configure(data: titleData)
+                    return _cell
+                }
+            } else {
+                let _cell = tableView.dequeueReusableCell(withIdentifier: "HourlyCell", for: indexPath) as! HourlyCell
+                if let hourlyData = forecast?.hourly?.data?[indexPath.row - 1] {
+                    _cell.configure(data: hourlyData)
+                    return _cell
+                }
             }
         case 2:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: "DailyCell", for: indexPath) as! DailyCell
-            if let dailyData = forecast?.daily {
-                _cell.configure(data: dailyData)
-                return _cell
+            if(indexPath.row == 0) {
+                let _cell = tableView.dequeueReusableCell(withIdentifier: "TitleCell", for: indexPath) as! TitleCell
+                if let titleData = forecast?.daily?.summary {
+                    _cell.configure(data: titleData)
+                    return _cell
+                }
+            } else {
+                let _cell = tableView.dequeueReusableCell(withIdentifier: "DailyCell", for: indexPath) as! DailyCell
+                if let dailyData = forecast?.daily?.data?[indexPath.row - 1] {
+                    _cell.configure(data: dailyData)
+                    return _cell
+                }
             }
         case 3:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: "ExtraCell", for: indexPath) as! ExtraCell
-            if let weatherData = forecast?.currently {
-                _cell.configure(data: weatherData)
+            if(indexPath.row == 0) {
+                let _cell = tableView.dequeueReusableCell(withIdentifier: "TitleCell", for: indexPath) as! TitleCell
+                _cell.configure(data: "Extra informations")
                 return _cell
+            } else {
+                let _cell = tableView.dequeueReusableCell(withIdentifier: "ExtraCell", for: indexPath) as! ExtraCell
+                if let weatherData = forecast?.currently {
+                    _cell.configure(data: weatherData)
+                    return _cell
+                }
             }
         default:
             break

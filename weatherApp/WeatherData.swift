@@ -6,4 +6,9 @@ struct WeatherData: Decodable {
     var icon: String?
     var humidity: Double?
     var temperature: Double?
+    var temperatureMax: Double?
+    var temperatureMin: Double?
+    var windSpeed: Double?
+    var pressure: Double?
+    var uvIndex: Int?
 }
